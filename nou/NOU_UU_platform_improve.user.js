@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         NOU 學習平台優化
 // @namespace    https://uu.nou.edu.tw/
-// @version      0.3
+// @version      0.4
 // @description  NOU 學習平台優化
 // @author       Lucas Yang
 // @match        https://uu.nou.edu.tw/learn/index.php
 // @match        https://uu.nou.edu.tw/learn/exam/*
+// @match        https://uu.nou.edu.tw/base/10001/content/*
 // @icon         https://uu.nou.edu.tw/base/10001/door/tpl/icon.ico
 // @grant        none
 // ==/UserScript==
@@ -13,7 +14,7 @@
 (function() {
   'use strict';
 
-  /* 清除 NOU 測驗亂點提醒 */
+  // 清除 NOU 測驗亂點提醒
   if (typeof window.init_winlock === 'function') {
     window.init_winlock = function () {};
   }
@@ -45,14 +46,16 @@
     return wrapNode
   }
 
+  // 增加音檔變速按鈕
   if (document.getElementById('s_main')) {
     document.getElementById('s_main').addEventListener('load', function () {
       /** @type {Document} */
       const d = this.contentWindow.document;
+
       if (!d.getElementById('audio-button-style') && d.querySelector('audio[controls]')) {
-        const styleNode = d.createElement('style');
-        styleNode.id = 'audio-button-style';
-        styleNode.appendChild(d.createTextNode(`
+        const style = d.createElement('style');
+        style.id = 'audio-button-style';
+        style.innerHTML = `
           .audio-wrapper {
             display: flex;
             align-items: center;
@@ -61,9 +64,11 @@
             color: #4C1D95 !important;
             background-color: #EDE9FE !important;
             padding: 6px 16px !important;
+            font-size: 14px !important;
             border-width: 0 !important;
             border-radius: 4px !important;
             margin-left: 10px !important;
+            text-decoration: none !important;
             cursor: pointer !important;
             transition: background-color 0.2s !important;
             user-select: none !important;
@@ -74,29 +79,104 @@
           .audio-wrapper button:active {
             background-color: #C4B5FD !important;
           }
-        `));
-        d.head.appendChild(styleNode);
+        `;
+        d.head.appendChild(style);
       }
+
       d.querySelectorAll('audio[controls]').forEach(function (audioEl) {
-        const button15El = document.createElement('button');
-        button15El.appendChild(d.createTextNode('1.5倍'));
-        button15El.addEventListener('click', async function () {
+        const button15 = document.createElement('button');
+        button15.innerHTML = '1.5倍';
+        button15.addEventListener('click', async function () {
           audioEl.playbackRate = 1.5;
           await audioEl.play();
         });
 
-        const button20El = document.createElement('button');
-        button20El.appendChild(d.createTextNode('2倍'));
-        button20El.addEventListener('click', async function () {
+        const button20 = document.createElement('button');
+        button20.innerHTML = '2倍';
+        button20.addEventListener('click', async function () {
           audioEl.playbackRate = 2;
           await audioEl.play();
         });
 
-        const wrapperEl = wrapEl(audioEl);
-        wrapperEl.classList.add('audio-wrapper')
-        wrapperEl.appendChild(button15El);
-        wrapperEl.appendChild(button20El);
+        const wrapper = wrapEl(audioEl);
+        wrapper.classList.add('audio-wrapper')
+        wrapper.appendChild(button15);
+        wrapper.appendChild(button20);
       });
     });
+  }
+
+  // 增加複製影片 mpv 指令按鈕
+  //
+  // 需要先安裝：
+  // 1. mpv: https://mpv.io/installation/
+  // 2. mpv handler: https://github.com/akiirui/mpv-handler/releases/latest
+  if (document.querySelector('.flowplayer') && typeof flowplayer === 'function') {
+    if (!document.getElementById('mpv-button-style')) {
+      const style = document.createElement('style');
+      style.id = 'mpv-button-style';
+      style.innerHTML = `
+        .mpv-wrapper {
+          display: flex;
+          align-items: center;
+          margin-top: 10px;
+        }
+        .mpv-wrapper a,
+        .mpv-wrapper button {
+          color: #4C1D95 !important;
+          background-color: #EDE9FE !important;
+          padding: 6px 16px !important;
+          font-size: 14px !important;
+          border-width: 0 !important;
+          border-radius: 4px !important;
+          margin-right: 10px !important;
+          text-decoration: none !important;
+          cursor: pointer !important;
+          transition: background-color 0.2s !important;
+          user-select: none !important;
+        }
+        .mpv-wrapper a:hover,
+        .mpv-wrapper button:enabled:hover {
+          background-color: #DDD6FE !important;
+        }
+        .mpv-wrapper a:active,
+        .mpv-wrapper button:enabled:active {
+          background-color: #C4B5FD !important;
+        }
+        .mpv-wrapper button:disabled {
+          color: #C4B5FD !important;
+          cursor: default !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    const url = flowplayer(0).video.src;
+    console.log(`mpv ${url}`);
+    const safeUrl = btoa(url).replace(/\//g, '_').replace(/\+/g, '-').replace(/\=/g, '')
+    console.log(`mpv://play/${safeUrl}/`);
+
+    const mpvOpenBtn = document.createElement('a');
+    mpvOpenBtn.href = `mpv://play/${safeUrl}/`;
+    mpvOpenBtn.target = '_blank';
+    mpvOpenBtn.innerHTML = 'mpv 播放';
+
+    const mpvCopyBtn = document.createElement('button');
+    mpvCopyBtn.innerHTML = '複製 mpv 指令';
+    mpvCopyBtn.addEventListener('click', async function () {
+      await navigator.clipboard.writeText(`mpv ${url}`);
+      mpvCopyBtn.innerHTML = '已複製！';
+      mpvCopyBtn.disabled = true;
+      setTimeout(() => {
+        mpvCopyBtn.innerHTML = '複製 mpv 指令';
+        mpvCopyBtn.disabled = false;
+      }, 3000);
+    })
+
+    const mpvWrapper = document.createElement('div');
+    mpvWrapper.classList.add('mpv-wrapper');
+    mpvWrapper.appendChild(mpvOpenBtn);
+    mpvWrapper.appendChild(mpvCopyBtn);
+    document.body.appendChild(mpvWrapper);
   }
 })();
