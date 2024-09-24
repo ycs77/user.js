@@ -17,47 +17,47 @@
   let windowBlurEvent;
 
   function findVideo() {
-      let i = 0;
-      let loaded = false;
-      const timer = setInterval(() => {
-          i++;
-          if (i > 5) {
-              clearInterval(timer);
-              return;
-          } else if (!loaded && d.querySelector('video')) {
-              let paused = d.querySelector('video').paused;
+    let i = 0;
+    let loaded = false;
+    const timer = setInterval(() => {
+      i++;
+      if (i > 5) {
+        clearInterval(timer);
+        return;
+      } else if (!loaded && d.querySelector('video')) {
+        let paused = d.querySelector('video').paused;
 
-              if (windowBlurEvent) {
-                  window.removeEventListener('blur', windowBlurEvent);
-              }
-              windowBlurEvent = () => {
-                  if (d.querySelector('video') && !paused) {
-                      d.querySelector('video').play();
-                  }
-              };
-              window.addEventListener('blur', windowBlurEvent);
-
-              d.querySelector('video').addEventListener('play', () => {
-                  paused = false;
-              });
-              d.querySelector('video').addEventListener('pause', () => {
-                  paused = true;
-              });
-
-              loaded = true;
+        if (windowBlurEvent) {
+          window.removeEventListener('blur', windowBlurEvent);
+        }
+        windowBlurEvent = () => {
+          if (d.querySelector('video') && !paused) {
+            d.querySelector('video').play();
           }
-      }, 1000);
+        };
+        window.addEventListener('blur', windowBlurEvent);
+
+        d.querySelector('video').addEventListener('play', () => {
+          paused = false;
+        });
+        d.querySelector('video').addEventListener('pause', () => {
+          paused = true;
+        });
+
+        loaded = true;
+      }
+    }, 1000);
   }
 
   const fullScreenRegex = /^\/course\/\d+\/learning-activity\/full-screen/;
 
   if (fullScreenRegex.test(location.pathname)) {
-      findVideo();
+    findVideo();
   }
 
   window.addEventListener('hashchange', function() {
-      if (fullScreenRegex.test(location.pathname)) {
-          findVideo();
-      }
+    if (fullScreenRegex.test(location.pathname)) {
+      findVideo();
+    }
   });
 })();
