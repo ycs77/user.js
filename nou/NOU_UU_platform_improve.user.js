@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NOU 學習平台優化
 // @namespace    https://uu.nou.edu.tw/
-// @version      0.4
+// @version      0.5
 // @description  NOU 學習平台優化
 // @author       Lucas Yang
 // @match        https://uu.nou.edu.tw/learn/index.php
@@ -9,6 +9,7 @@
 // @match        https://uu.nou.edu.tw/base/10001/content/*
 // @icon         https://uu.nou.edu.tw/base/10001/door/tpl/icon.ico
 // @grant        none
+// @require      https://cdn.jsdelivr.net/npm/js-base64@3.7.7/base64.min.js
 // ==/UserScript==
 
 (function() {
@@ -152,31 +153,37 @@
     }
 
     const url = flowplayer(0).video.src;
-    console.log(`mpv ${url}`);
-    const safeUrl = btoa(url).replace(/\//g, '_').replace(/\+/g, '-').replace(/\=/g, '')
-    console.log(`mpv://play/${safeUrl}/`);
+    const title = document.title;
+    const mpvCommand = `mpv ${url} --title="${title}"`;
+    const mpvUrl = `mpv://play/${encodeMpvURI(url)}/?v_title=${encodeMpvURI(title)}`;
+    console.log(mpvCommand);
+    console.log(mpvUrl);
 
     const mpvOpenBtn = document.createElement('a');
-    mpvOpenBtn.href = `mpv://play/${safeUrl}/`;
+    mpvOpenBtn.href = mpvUrl;
     mpvOpenBtn.target = '_blank';
     mpvOpenBtn.innerHTML = 'mpv 播放';
 
     const mpvCopyBtn = document.createElement('button');
     mpvCopyBtn.innerHTML = '複製 mpv 指令';
     mpvCopyBtn.addEventListener('click', async function () {
-      await navigator.clipboard.writeText(`mpv ${url}`);
+      await navigator.clipboard.writeText(mpvCommand);
       mpvCopyBtn.innerHTML = '已複製！';
       mpvCopyBtn.disabled = true;
       setTimeout(() => {
         mpvCopyBtn.innerHTML = '複製 mpv 指令';
         mpvCopyBtn.disabled = false;
       }, 3000);
-    })
+    });
 
     const mpvWrapper = document.createElement('div');
     mpvWrapper.classList.add('mpv-wrapper');
     mpvWrapper.appendChild(mpvOpenBtn);
     mpvWrapper.appendChild(mpvCopyBtn);
     document.body.appendChild(mpvWrapper);
+
+    function encodeMpvURI(data) {
+      return Base64.encode(data).replace(/\//g, '_').replace(/\+/g, '-').replace(/\=/g, '');
+    }
   }
 })();
