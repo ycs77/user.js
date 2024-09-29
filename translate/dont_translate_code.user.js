@@ -13,6 +13,7 @@
 
   /**
    * Add translate class to element.
+   *
    * @param {HTMLElement} el
    */
   function addTranslateClass(el) {
