@@ -12,21 +12,21 @@ function useVars() {
   const spreadSheet = SpreadsheetApp.openByUrl(spreadsheetUrl)
   const sheet = spreadSheet.getSheetByName('規劃表')
 
-  const last_row = sheet.getLastRow()
+  const lastRow = sheet.getLastRow()
 
-  const class_names_data = sheet.getRange('A1:N1').getValues()
-  const class_names = times.map((_, i) => class_names_data[0][4 + i * 2])
+  const classNamesData = sheet.getRange('A1:N1').getValues()
+  const classNames = times.map((_, i) => classNamesData[0][4 + i * 2])
 
-  const range = sheet.getRange('A2:N' + last_row)
+  const range = sheet.getRange('A2:N' + lastRow)
   const data = range.getValues()
 
   const mergedRanges = range.getMergedRanges()
 
-  return { sheet, class_names, data, mergedRanges }
+  return { sheet, classNames, data, mergedRanges }
 }
 
 function createNOTClassEventsFromSpreadsheet() {
-  const { class_names, data, mergedRanges } = useVars()
+  const { classNames, data, mergedRanges } = useVars()
 
   for (let row of data) {
     const date = row[1].getFullYear() + '/' + (row[1].getMonth() + 1) + '/' + row[1].getDate()
@@ -34,14 +34,14 @@ function createNOTClassEventsFromSpreadsheet() {
     // 新增課程提醒
     for (let i in times) {
       const time = times[i]
-      const class_name = class_names[i]
-      const event_type = row[5 + i * 2]
-      const has_event = ['一般', '網路', '實習'].includes(event_type)
+      const className = classNames[i]
+      const eventType = row[5 + i * 2]
+      const hasEvent = ['一般', '網路', '實習'].includes(eventType)
 
-      if (has_event) {
+      if (hasEvent) {
         const event = CalendarApp
           .getDefaultCalendar()
-          .createAllDayEvent(class_name, new Date(date + ' ' + time.start), new Date(date + ' ' + time.end))
+          .createAllDayEvent(className, new Date(date + ' ' + time.start), new Date(date + ' ' + time.end))
 
         event
           .removeAllReminders()
@@ -54,14 +54,14 @@ function createNOTClassEventsFromSpreadsheet() {
   for (let mergedRange of mergedRanges) {
     const a1Notation = mergedRange.getA1Notation()
     const a1NotationMatches = a1Notation.match(/^[A-Z]+(\d+):[A-Z]+(\d+)$/)
-    const event_name = mergedRange.getDisplayValue()
-    const start_time = data[parseInt(a1NotationMatches[1]) - 2][1]
-    const end_time = data[parseInt(a1NotationMatches[2]) - 2][1]
-    end_time.setDate(end_time.getDate() + 1)
+    const eventName = mergedRange.getDisplayValue()
+    const startTime = data[parseInt(a1NotationMatches[1]) - 2][1]
+    const endTime = data[parseInt(a1NotationMatches[2]) - 2][1]
+    endTime.setDate(endTime.getDate() + 1)
 
     const event = CalendarApp
       .getDefaultCalendar()
-      .createEvent(event_name, new Date(start_time), new Date(end_time))
+      .createEvent(eventName, new Date(startTime), new Date(endTime))
 
     event
       .removeAllReminders()
@@ -71,17 +71,17 @@ function createNOTClassEventsFromSpreadsheet() {
 }
 
 function removeNOTClassEventsFromSpreadsheet() {
-  const { class_names, data, mergedRanges } = useVars()
+  const { classNames, data, mergedRanges } = useVars()
 
   const events = CalendarApp
     .getDefaultCalendar()
     .getEvents(data[0][1], data[data.length - 1][1])
 
-  const event_names = mergedRanges.map(mergedRange => mergedRange.getDisplayValue())
+  const eventNames = mergedRanges.map(mergedRange => mergedRange.getDisplayValue())
 
   // 刪除 課程提醒 和 考試提醒
   events
-    .filter(event => [...class_names, ...event_names].includes(event.getTitle()))
+    .filter(event => [...classNames, ...eventNames].includes(event.getTitle()))
     .forEach(event => {
       event.deleteEvent()
     })
