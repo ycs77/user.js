@@ -41,7 +41,7 @@ function createNOTClassEventsFromSpreadsheet() {
       if (hasEvent) {
         const event = CalendarApp
           .getDefaultCalendar()
-          .createAllDayEvent(className, new Date(date + ' ' + time.start), new Date(date + ' ' + time.end))
+          .createEvent(className, new Date(date + ' ' + time.start), new Date(date + ' ' + time.end))
 
         event
           .removeAllReminders()
@@ -61,7 +61,7 @@ function createNOTClassEventsFromSpreadsheet() {
 
     const event = CalendarApp
       .getDefaultCalendar()
-      .createEvent(eventName, new Date(startTime), new Date(endTime))
+      .createAllDayEvent(eventName, new Date(startTime), new Date(endTime))
 
     event
       .removeAllReminders()
