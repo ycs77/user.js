@@ -82,7 +82,5 @@ function removeNOTClassEventsFromSpreadsheet() {
   // 刪除 課程提醒 和 考試提醒
   events
     .filter(event => [...classNames, ...eventNames].includes(event.getTitle()))
-    .forEach(event => {
-      event.deleteEvent()
-    })
+    .forEach(event => event.deleteEvent())
 }
