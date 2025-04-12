@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Don't translate code
 // @namespace    ycs77
-// @version      0.2.1
+// @version      0.3.0
 // @description  Don't translate code from all website
 // @author       Lucas Yang
 // @match        http://*/*
@@ -29,5 +29,16 @@
   ]) {
     addTranslateClass(el)
   }
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      for (const el of [
+        // For svelte.dev editor section
+        document.querySelector('svelte-split-pane[data-pane="main"] > svelte-split-pane-section:nth-child(2)'),
+      ]) {
+        addTranslateClass(el)
+      }
+    }, 0)
+  })
 
 })();
