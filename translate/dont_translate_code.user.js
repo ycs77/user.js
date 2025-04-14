@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Don't translate code
 // @namespace    ycs77
-// @version      0.3.0
+// @version      0.3.1
 // @description  Don't translate code from all website
 // @author       Lucas Yang
 // @match        http://*/*
@@ -25,6 +25,7 @@
   for (const el of [
     ...document.querySelectorAll('pre'),
     ...document.querySelectorAll('code'),
+    ...document.querySelectorAll('.code-block'),
     ...document.querySelectorAll('table.diff-table'),
   ]) {
     addTranslateClass(el)
