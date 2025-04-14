@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Don't translate code
 // @namespace    ycs77
-// @version      0.3.1
+// @version      0.3.2
 // @description  Don't translate code from all website
 // @author       Lucas Yang
 // @match        http://*/*
@@ -35,7 +35,7 @@
     setTimeout(() => {
       for (const el of [
         // For svelte.dev editor section
-        document.querySelector('svelte-split-pane[data-pane="main"] > svelte-split-pane-section:nth-child(2)'),
+        ...[document.querySelector('svelte-split-pane[data-pane="main"] > svelte-split-pane-section:nth-child(2)')].filter(Boolean),
       ]) {
         addTranslateClass(el)
       }
