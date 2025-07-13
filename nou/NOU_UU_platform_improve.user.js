@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NOU 學習平台優化
 // @namespace    https://uu.nou.edu.tw/
-// @version      0.6
+// @version      0.7
 // @description  NOU 學習平台優化
 // @author       Lucas Yang
 // @match        https://uu.nou.edu.tw/learn/index.php
@@ -152,7 +152,15 @@
       document.head.appendChild(style);
     }
 
-    const url = flowplayer(0).video.src;
+    let url;
+    if (document.getElementById('video') && flowplayer.version.startsWith('7.')) {
+      url = flowplayer('#video').video.src;
+    } else if (document.getElementById('player') && flowplayer.version.startsWith('3.')) {
+      url = flowplayer('#player').original_src;
+    } else {
+      throw new Error('不支援的 flowplayer 版本或未找到影片元素。');
+    }
+
     const title = document.title;
     const mpvCommand = `mpv ${url} --title="${title}"`;
     const mpvUrl = `mpv://play/${encodeMpvURI(url)}/?v_title=${encodeMpvURI(title)}`;
