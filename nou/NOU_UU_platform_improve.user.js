@@ -185,13 +185,13 @@
     });
 
     const mpvCopySpeedUpBtn = document.createElement('button');
-    mpvCopySpeedUpBtn.innerHTML = '複製 mpv 指令 (1.46x 速度)';
+    mpvCopySpeedUpBtn.innerHTML = '複製 mpv 指令 (1.46倍速)';
     mpvCopySpeedUpBtn.addEventListener('click', async function () {
-      await navigator.clipboard.writeText(mpvCommand + ' --speed=1.46');
+      await navigator.clipboard.writeText(mpvCommand + ' --speed=1.4641');
       mpvCopySpeedUpBtn.innerHTML = '已複製！';
       mpvCopySpeedUpBtn.disabled = true;
       setTimeout(() => {
-        mpvCopySpeedUpBtn.innerHTML = '複製 mpv 指令 (1.46x 速度)';
+        mpvCopySpeedUpBtn.innerHTML = '複製 mpv 指令 (1.46倍速)';
         mpvCopySpeedUpBtn.disabled = false;
       }, 3000);
     });
