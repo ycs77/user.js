@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NOU 學習平台優化
 // @namespace    https://uu.nou.edu.tw/
-// @version      0.8
+// @version      0.9
 // @description  NOU 學習平台優化
 // @author       Lucas Yang
 // @match        https://uu.nou.edu.tw/learn/index.php
@@ -184,10 +184,23 @@
       }, 3000);
     });
 
+    const mpvCopySpeedUpBtn = document.createElement('button');
+    mpvCopySpeedUpBtn.innerHTML = '複製 mpv 指令 (1.46x 速度)';
+    mpvCopySpeedUpBtn.addEventListener('click', async function () {
+      await navigator.clipboard.writeText(mpvCommand + ' --speed=1.46');
+      mpvCopySpeedUpBtn.innerHTML = '已複製！';
+      mpvCopySpeedUpBtn.disabled = true;
+      setTimeout(() => {
+        mpvCopySpeedUpBtn.innerHTML = '複製 mpv 指令 (1.46x 速度)';
+        mpvCopySpeedUpBtn.disabled = false;
+      }, 3000);
+    });
+
     const mpvWrapper = document.createElement('div');
     mpvWrapper.classList.add('mpv-wrapper');
     mpvWrapper.appendChild(mpvOpenBtn);
     mpvWrapper.appendChild(mpvCopyBtn);
+    mpvWrapper.appendChild(mpvCopySpeedUpBtn);
     document.body.appendChild(mpvWrapper);
 
     function encodeMpvURI(data) {
