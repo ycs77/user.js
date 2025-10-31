@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Don't translate code
+// @name         Don't translate code block
 // @namespace    ycs77
 // @version      0.3.2
-// @description  Don't translate code from all website
+// @description  Don't translate code blocks from all website
 // @author       Lucas Yang
 // @match        http://*/*
 // @match        https://*/*

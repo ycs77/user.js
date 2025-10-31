@@ -17,4 +17,4 @@
 
 | 腳本名稱 | 安裝 |
 | ------- | ---- |
-| 禁止翻譯程式碼區塊 | [安裝](https://github.com/ycs77/user.js/raw/refs/heads/main/translate/dont_translate_code.user.js) |
+| 禁止翻譯程式碼區塊 | [安裝](https://github.com/ycs77/user.js/raw/refs/heads/main/translate/dont_translate_code_block.user.js) |
