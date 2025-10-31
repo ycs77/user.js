@@ -1,5 +1,11 @@
 # Lucas Yang 的常用腳本
 
+## API
+
+| 腳本名稱 | 安裝 |
+| ------- | ---- |
+| Stoplight Elements API docs 自動刷新 Token | [安裝](https://github.com/ycs77/user.js/raw/refs/heads/main/api/Stoplight_Elements_API_docs_auto_refresh.user.js) |
+
 ## NOU 空大
 
 | 腳本名稱 | 安裝 |
