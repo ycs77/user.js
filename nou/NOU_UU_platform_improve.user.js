@@ -8,8 +8,8 @@
 // @match        https://uu.nou.edu.tw/learn/exam/*
 // @match        https://uu.nou.edu.tw/base/10001/*
 // @icon         https://uu.nou.edu.tw/base/10001/door/tpl/icon.ico
-// @grant        none
 // @require      https://cdn.jsdelivr.net/npm/js-base64@3.7.7/base64.min.js
+// @grant        none
 // ==/UserScript==
 
 (function() {
