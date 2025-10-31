@@ -35,3 +35,20 @@
    //
    // =================================================
 ```
+
+也可以設定多個帳號以快速切換：
+
+```js
+const accounts = [
+  {
+    name: '主要帳號',
+    email: 'your@example.com',
+    password: 'yuor_password',
+  },
+  {
+    name: '次要帳號',
+    email: 'your@example2.com',
+    password: 'yuor_password',
+  },
+]
+```

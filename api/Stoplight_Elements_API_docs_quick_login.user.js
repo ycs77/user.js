@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Stoplight Elements API docs 快速登入 - 範例網站
 // @namespace    ycs77
-// @version      0.2.0
+// @version      0.3.0
 // @description  可以在使用 Stoplight Elements 的 API 文件時快速登入帳號
 // @author       Lucas Yang
 // @match        https://example.com/docs
@@ -52,7 +52,6 @@
       const data = await response.json()
 
       if (!response.ok) {
-        console.log('登入失敗：', data)
         const errorMessage = data.msg || data.message || JSON.stringify(data)
         throw new Error(`[HTTP ${response.status}] 登入失敗：${errorMessage}`)
       }
@@ -82,7 +81,7 @@
     const sendRequestBtn = actionsWrapper?.querySelector('button')
 
     if (!tokenInput || !actionsWrapper || !sendRequestBtn) {
-      console.warn('未找到 Token 輸入框元素，無法添加刷新按鈕。')
+      console.warn('未找到 Token 輸入框元素，無法新增快速登入按鈕')
       return
     }
 
@@ -121,10 +120,10 @@
       accountSelect.style.appearance = 'auto'
       accountSelect.style['-moz-appearance'] = 'auto'
       accountSelect.style['-webkit-appearance'] = 'auto'
-      accounts.forEach(({ email }) => {
+      accounts.forEach(({ name, email }) => {
         const option = document.createElement('option')
         option.value = email
-        option.text = email
+        option.text = name ? `(${name}) ${email}` : email
         if (email === currentAccount.email) {
           option.selected = true
         }
@@ -133,7 +132,6 @@
       })
       accountSelect.onchange = e => {
         const selectedEmail = e.target.value
-        console.log('選擇的帳號：', selectedEmail)
         const selectedAccount = accounts.find(({ email }) => email === selectedEmail)
         if (selectedAccount) {
           currentAccount.email = selectedAccount.email
@@ -166,7 +164,6 @@
         onPageLoaded()
       }
     })
-
     observer.observe(elementsApi, {
       childList: true,
       subtree: true,
