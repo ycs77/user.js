@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Stoplight Elements API docs 快速登入 - 範例網站
 // @namespace    ycs77
-// @version      0.3.0
+// @version      0.3.1
 // @description  可以在使用 Stoplight Elements 的 API 文件時快速登入帳號
 // @author       Lucas Yang
 // @match        https://example.com/docs
@@ -76,7 +76,9 @@
 
   // 注入登入按鈕
   function injectQuickLoginUI() {
+    /** @type {HTMLInputElement | null} */
     const tokenInput = document.querySelector('[data-test="try-it-auth"] input[aria-label="Token"]')
+    /** @type {HTMLElement | null} */
     const actionsWrapper = document.querySelector('.SendButtonHolder .sl-stack')
     const sendRequestBtn = actionsWrapper?.querySelector('button')
 
@@ -85,11 +87,20 @@
       return
     }
 
+    if (actionsWrapper.children.length > 1) {
+      return
+    }
+
+    // 調整既有元素樣式
+    actionsWrapper.style.flexWrap = 'wrap'
+    sendRequestBtn.style.flexShrink = '0'
+
     // 新增快速登入按鈕
     const quickLoginBtn = document.createElement('button')
     quickLoginBtn.type = 'button'
     quickLoginBtn.className = sendRequestBtn.className
     quickLoginBtn.innerText = '快速登入'
+    quickLoginBtn.style.flexShrink = '0'
     quickLoginBtn.onclick = async () => {
       quickLoginBtn.disabled = true
       quickLoginBtn.classList.add('sl-cursor-wait')
@@ -115,8 +126,9 @@
       // 新增帳號下拉選單
       const accountSelect = document.createElement('select')
       accountSelect.className = 'sl-button sl-form-group-border sl-h-sm sl-text-base sl-font-normal sl-px-1.5 sl-bg-transparent sl-rounded sl-border-transparent hover:sl-border-input focus:sl-border-primary active:sl-border-primary sl-border disabled:sl-opacity-60'
-      accountSelect.style.maxWidth = '130px'
+      accountSelect.style.maxWidth = '100px'
       accountSelect.style.lineHeight = '1.5'
+      accountSelect.style.flexShrink = '0'
       accountSelect.style.appearance = 'auto'
       accountSelect.style['-moz-appearance'] = 'auto'
       accountSelect.style['-webkit-appearance'] = 'auto'
