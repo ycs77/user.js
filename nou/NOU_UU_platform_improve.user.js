@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NOU 學習平台優化
 // @namespace    https://uu.nou.edu.tw/
-// @version      0.9
+// @version      1.0
 // @description  NOU 學習平台優化
 // @author       Lucas Yang
 // @match        https://uu.nou.edu.tw/learn/index.php
@@ -171,36 +171,53 @@
     mpvOpenBtn.href = mpvUrl;
     mpvOpenBtn.target = '_blank';
     mpvOpenBtn.innerHTML = 'mpv 播放';
+    mpvOpenBtn.title = '使用 mpv 播放影片';
 
-    const mpvCopyBtn = document.createElement('button');
-    mpvCopyBtn.innerHTML = '複製 mpv 指令';
-    mpvCopyBtn.addEventListener('click', async function () {
+    const mpvCopyCmdBtn = document.createElement('button');
+    mpvCopyCmdBtn.innerHTML = 'mpv 指令';
+    mpvCopyCmdBtn.title = '複製 mpv 指令';
+    mpvCopyCmdBtn.addEventListener('click', async function () {
       await navigator.clipboard.writeText(mpvCommand);
-      mpvCopyBtn.innerHTML = '已複製！';
-      mpvCopyBtn.disabled = true;
+      mpvCopyCmdBtn.innerHTML = '已複製！';
+      mpvCopyCmdBtn.disabled = true;
       setTimeout(() => {
-        mpvCopyBtn.innerHTML = '複製 mpv 指令';
-        mpvCopyBtn.disabled = false;
+        mpvCopyCmdBtn.innerHTML = 'mpv 指令';
+        mpvCopyCmdBtn.disabled = false;
       }, 3000);
     });
 
-    const mpvCopySpeedUpBtn = document.createElement('button');
-    mpvCopySpeedUpBtn.innerHTML = '複製 mpv 指令 (1.46倍速)';
-    mpvCopySpeedUpBtn.addEventListener('click', async function () {
+    const mpvCopyCmdSpeed1_46Btn = document.createElement('button');
+    mpvCopyCmdSpeed1_46Btn.innerHTML = 'mpv 指令 (1.46倍速)';
+    mpvCopyCmdSpeed1_46Btn.title = '複製 mpv 指令 (1.46倍速)';
+    mpvCopyCmdSpeed1_46Btn.addEventListener('click', async function () {
       await navigator.clipboard.writeText(mpvCommand + ' --speed=1.4641');
-      mpvCopySpeedUpBtn.innerHTML = '已複製！';
-      mpvCopySpeedUpBtn.disabled = true;
+      mpvCopyCmdSpeed1_46Btn.innerHTML = '已複製！';
+      mpvCopyCmdSpeed1_46Btn.disabled = true;
       setTimeout(() => {
-        mpvCopySpeedUpBtn.innerHTML = '複製 mpv 指令 (1.46倍速)';
-        mpvCopySpeedUpBtn.disabled = false;
+        mpvCopyCmdSpeed1_46Btn.innerHTML = 'mpv 指令 (1.46倍速)';
+        mpvCopyCmdSpeed1_46Btn.disabled = false;
+      }, 3000);
+    });
+
+    const mpvCopyCmdSpeed2Btn = document.createElement('button');
+    mpvCopyCmdSpeed2Btn.innerHTML = 'mpv 指令 (2倍速)';
+    mpvCopyCmdSpeed2Btn.title = '複製 mpv 指令 (2倍速)';
+    mpvCopyCmdSpeed2Btn.addEventListener('click', async function () {
+      await navigator.clipboard.writeText(mpvCommand + ' --speed=2');
+      mpvCopyCmdSpeed2Btn.innerHTML = '已複製！';
+      mpvCopyCmdSpeed2Btn.disabled = true;
+      setTimeout(() => {
+        mpvCopyCmdSpeed2Btn.innerHTML = 'mpv 指令 (2倍速)';
+        mpvCopyCmdSpeed2Btn.disabled = false;
       }, 3000);
     });
 
     const mpvWrapper = document.createElement('div');
     mpvWrapper.classList.add('mpv-wrapper');
     mpvWrapper.appendChild(mpvOpenBtn);
-    mpvWrapper.appendChild(mpvCopyBtn);
-    mpvWrapper.appendChild(mpvCopySpeedUpBtn);
+    mpvWrapper.appendChild(mpvCopyCmdBtn);
+    mpvWrapper.appendChild(mpvCopyCmdSpeed1_46Btn);
+    mpvWrapper.appendChild(mpvCopyCmdSpeed2Btn);
     document.body.appendChild(mpvWrapper);
 
     function encodeMpvURI(data) {
