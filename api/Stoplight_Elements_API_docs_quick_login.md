@@ -9,8 +9,8 @@
 -// @name         Stoplight Elements API docs 快速登入 - 範例網站
 +// @name         Stoplight Elements API docs 快速登入 - 我的網站
  // ...
--// @match        https://example.com/docs
-+// @match        https://your-site.com/docs
+-// @match        https://example.com/docs*
++// @match        https://your-site.com/docs*
  // ...
  // ==/UserScript==
 

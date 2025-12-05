@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Stoplight Elements API docs 快速登入 - 範例網站
 // @namespace    ycs77
-// @version      0.3.1
+// @version      0.3.2
 // @description  可以在使用 Stoplight Elements 的 API 文件時快速登入帳號
 // @author       Lucas Yang
-// @match        https://example.com/docs
+// @match        https://example.com/docs*
 // @icon         https://cdn.prod.website-files.com/6320e912264435aca2ab0351/64888134079693cfbffed91c_stoplight-favicon-small.png
 // @grant        none
 // ==/UserScript==
